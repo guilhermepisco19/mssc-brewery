@@ -3,11 +3,10 @@ package dev.guilhermepisco.msscbrewery.web.controller;
 import dev.guilhermepisco.msscbrewery.web.model.BeerDto;
 import dev.guilhermepisco.msscbrewery.web.service.BeerService;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import java.net.URI;
 import java.util.UUID;
 
 @RestController
@@ -29,4 +28,16 @@ public class BeerController {
 
     }
 
+    @PostMapping
+    public ResponseEntity<Void> handlePost(@RequestBody BeerDto beerDto){
+
+        BeerDto savedDto = beerService.saveNewBeer(beerDto);
+
+        URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
+                .path("/{id}").buildAndExpand(savedDto.id()).toUri();
+
+        return ResponseEntity
+                .created(uri)
+                .build();
+    }
 }
