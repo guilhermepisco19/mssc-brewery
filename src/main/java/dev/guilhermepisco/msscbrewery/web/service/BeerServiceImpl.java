@@ -17,4 +17,9 @@ public class BeerServiceImpl implements BeerService{
     public BeerDto saveNewBeer(BeerDto beerDto) {
         return new BeerDto(UUID.randomUUID(), beerDto.beerName(), beerDto.beerStyle(), beerDto.upc());
     }
+
+    @Override
+    public void updateBeer(UUID beerId, BeerDto beerDto) {
+        //todo impl - would add impl to update a beer
+    }
 }

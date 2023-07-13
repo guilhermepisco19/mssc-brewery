@@ -40,4 +40,12 @@ public class BeerController {
                 .created(uri)
                 .build();
     }
+
+    @PutMapping("/{beerId}")
+    public ResponseEntity<Void> handlePut(@PathVariable UUID beerId, @RequestBody BeerDto beerDto){
+
+        beerService.updateBeer(beerId, beerDto);
+
+        return ResponseEntity.noContent().build();
+    }
 }
