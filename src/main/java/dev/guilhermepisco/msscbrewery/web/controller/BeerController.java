@@ -2,6 +2,7 @@ package dev.guilhermepisco.msscbrewery.web.controller;
 
 import dev.guilhermepisco.msscbrewery.web.model.BeerDto;
 import dev.guilhermepisco.msscbrewery.web.service.BeerService;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -48,4 +49,11 @@ public class BeerController {
 
         return ResponseEntity.noContent().build();
     }
+
+    @DeleteMapping("/{beerId}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteBeer(@PathVariable UUID beerId){
+        beerService.deleteBeerById(beerId);
+    }
+
 }
