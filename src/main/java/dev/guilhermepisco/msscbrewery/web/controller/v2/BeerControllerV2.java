@@ -1,7 +1,8 @@
-package dev.guilhermepisco.msscbrewery.web.controller;
+package dev.guilhermepisco.msscbrewery.web.controller.v2;
 
-import dev.guilhermepisco.msscbrewery.web.model.BeerDto;
+import dev.guilhermepisco.msscbrewery.web.model.v2.BeerDtoV2;
 import dev.guilhermepisco.msscbrewery.web.service.BeerService;
+import dev.guilhermepisco.msscbrewery.web.service.v2.BeerServiceV2;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -10,19 +11,19 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import java.net.URI;
 import java.util.UUID;
 
-@Deprecated
 @RestController
-@RequestMapping("/api/v1/beer")
-public class BeerController {
+@RequestMapping("/api/v2/beer")
+public class BeerControllerV2 {
 
-    private final BeerService beerService;
 
-    public BeerController(BeerService beerService){
+    private final BeerServiceV2 beerService;
+
+    public BeerControllerV2(BeerServiceV2 beerService){
         this.beerService = beerService;
     }
 
     @GetMapping("/{beerId}")
-    public ResponseEntity<BeerDto> findBeer(@PathVariable UUID beerId){
+    public ResponseEntity<BeerDtoV2> findBeer(@PathVariable UUID beerId){
 
         return ResponseEntity
                 .ok()
@@ -31,9 +32,9 @@ public class BeerController {
     }
 
     @PostMapping
-    public ResponseEntity<Void> handlePost(@RequestBody BeerDto beerDto){
+    public ResponseEntity<Void> handlePost(@RequestBody BeerDtoV2 beerDto){
 
-        BeerDto savedDto = beerService.saveNewBeer(beerDto);
+        BeerDtoV2 savedDto = beerService.saveNewBeer(beerDto);
 
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
                 .path("/{id}").buildAndExpand(savedDto.id()).toUri();
@@ -44,7 +45,7 @@ public class BeerController {
     }
 
     @PutMapping("/{beerId}")
-    public ResponseEntity<Void> handlePut(@PathVariable UUID beerId, @RequestBody BeerDto beerDto){
+    public ResponseEntity<Void> handlePut(@PathVariable UUID beerId, @RequestBody BeerDtoV2 beerDto){
 
         beerService.updateBeer(beerId, beerDto);
 
