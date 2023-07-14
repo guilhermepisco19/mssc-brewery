@@ -1,12 +1,11 @@
-package dev.guilhermepisco.msscbrewery.web.controller;
+package dev.guilhermepisco.msscbrewery.web.controller.v2;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import dev.guilhermepisco.msscbrewery.web.controller.BeerController;
 import dev.guilhermepisco.msscbrewery.web.model.BeerDto;
 import dev.guilhermepisco.msscbrewery.web.service.BeerService;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -25,6 +24,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WebMvcTest(BeerController.class)
 public class BeerControllerTest {
 
+    public static final String API_V_1_BEER = "/api/v1/beer";
     @MockBean
     BeerService beerService;
 
@@ -45,7 +45,7 @@ public class BeerControllerTest {
     public void getBeer() throws Exception {
         given(beerService.getBeerById(any(UUID.class))).willReturn(validBeer);
 
-        mockMvc.perform(get("/api/v1/beer/" + validBeer.id().toString()).accept(MediaType.APPLICATION_JSON))
+        mockMvc.perform(get(API_V_1_BEER+ "/" + validBeer.id().toString()).accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.id", is(validBeer.id().toString())))
@@ -64,7 +64,7 @@ public class BeerControllerTest {
 
         given(beerService.saveNewBeer(any())).willReturn(savedDto);
 
-        mockMvc.perform(post("/api/v1/beer")
+        mockMvc.perform(post(API_V_1_BEER)
                         .content(beerDtoJson)
                         .contentType(MediaType.APPLICATION_JSON_VALUE)
                         .accept(MediaType.APPLICATION_JSON_VALUE))
@@ -75,11 +75,11 @@ public class BeerControllerTest {
     @Test
     public void handleUpdate() throws Exception {
         //given
-        BeerDto beerDto = validBeer;
+        BeerDto beerDto = new BeerDto(null, "Beer1", "PALE_ALE", 123456789012L);
         String beerDtoJson = objectMapper.writeValueAsString(beerDto);
 
         //when
-        mockMvc.perform(put("/api/v1/beer/" + validBeer.id())
+        mockMvc.perform(put(API_V_1_BEER + "/" + validBeer.id())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(beerDtoJson))
                 .andExpect(status().isNoContent());
