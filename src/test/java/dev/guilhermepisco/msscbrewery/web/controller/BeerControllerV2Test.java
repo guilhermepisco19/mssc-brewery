@@ -15,6 +15,9 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.time.Clock;
+import java.time.OffsetDateTime;
+import java.time.ZoneId;
 import java.util.UUID;
 
 import static org.hamcrest.core.Is.is;
@@ -41,7 +44,7 @@ public class BeerControllerV2Test {
 
     @BeforeEach
     public void setUp() {
-        validBeer = new BeerDtoV2(UUID.randomUUID(), "Beer1", BeerStyle.ALE, 123456789012L);
+        validBeer = new BeerDtoV2(UUID.randomUUID(), "Beer1", BeerStyle.ALE, 123456789012L, OffsetDateTime.now(),OffsetDateTime.now());
     }
 
     @Test
@@ -59,9 +62,9 @@ public class BeerControllerV2Test {
     //@Disabled
     public void handlePost() throws Exception {
         //given
-        BeerDtoV2 beerDto = new BeerDtoV2(null, "Beer1", BeerStyle.ALE, 123456789012L);
+        BeerDtoV2 beerDto = new BeerDtoV2(null, "Beer1", BeerStyle.ALE, 123456789012L, OffsetDateTime.now(Clock.system(ZoneId.of("UTC"))),OffsetDateTime.now(Clock.system(ZoneId.of("UTC"))));
 
-        BeerDtoV2 savedDto = new BeerDtoV2(UUID.randomUUID(), "New Beer", BeerStyle.ALE, 123456789012L);
+        BeerDtoV2 savedDto = new BeerDtoV2(UUID.randomUUID(), "New Beer", BeerStyle.ALE, 123456789012L, OffsetDateTime.now(Clock.system(ZoneId.of("UTC"))),OffsetDateTime.now(Clock.system(ZoneId.of("UTC"))));
 
         String beerDtoJson = objectMapper.writeValueAsString(beerDto);
 
@@ -78,7 +81,7 @@ public class BeerControllerV2Test {
     @Test
     public void handleUpdate() throws Exception {
         //given
-        BeerDtoV2 beerDto = new BeerDtoV2(null, "Galaxy", BeerStyle.ALE, 123456789012L);
+        BeerDtoV2 beerDto = new BeerDtoV2(null, "Galaxy", BeerStyle.ALE, 123456789012L, OffsetDateTime.now(Clock.system(ZoneId.of("UTC"))),OffsetDateTime.now(Clock.system(ZoneId.of("UTC"))));
         String beerDtoJson = objectMapper.writeValueAsString(beerDto);
 
         //when
